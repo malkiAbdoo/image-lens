@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist/lib",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "lib": ["dom", "es2015", "es2016"],
+    "paths": {
+      "html2canvas": ["./node_modules/html2canvas/dist/types/index"]
+    },
+
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    // "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,                          
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
