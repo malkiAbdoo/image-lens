@@ -69,11 +69,11 @@ export function focus (element: HTMLElement = body): HTMLElement {
 }
 focus(document.querySelector('.s2') as HTMLElement);
 
-export function addTrailer (duration: number = 200, element: HTMLElement = body): HTMLElement {
+export function addTrailer (duration = 200, element: HTMLElement = body): HTMLElement {
   const trailer = createTrailer(element);
   trailer.classList.add("cursor-trailer");
   body.appendChild(trailer);
-  let style = window.getComputedStyle(trailer);
+  const style = window.getComputedStyle(trailer);
   trailer.style.transitionDuration = duration + 'ms';
   trailer.style.transitionTimingFunction = 'ease-out';
   if (style['width'] == 'auto' && style['height'] == 'auto' && style['borderWidth'] == '0px') {
@@ -86,7 +86,7 @@ export function addTrailer (duration: number = 200, element: HTMLElement = body)
 }
 addTrailer(200, document.querySelector('.s1') as HTMLElement);
 
-export function zoomLens (zoomRatio: number = 1.5, element: HTMLElement = body): HTMLElement {
+export function zoomLens (zoomRatio = 1.5, element: HTMLElement = body): HTMLElement {
   const lens = document.createElement("div");
   lens.classList.add("cursor-lens");
   lens.style.position = 'fixed';
@@ -119,14 +119,14 @@ export function zoomLens (zoomRatio: number = 1.5, element: HTMLElement = body):
   element.addEventListener("mousemove", (event) => {
     const containerRect = element.getBoundingClientRect();
     const { x, y } = mousePosition(event, containerRect);
-    let cx = lensRect.width / zoomRect.width;
-    let cy = lensRect.height / zoomRect.height;
+    const cx = lensRect.width / zoomRect.width;
+    const cy = lensRect.height / zoomRect.height;
   
     lens.style.backgroundSize = containerRect.width * cx + 'px ' + containerRect.height * cy + 'px';
     lens.style.backgroundPosition = '-' + x * cx + 'px -' + y * cy + 'px';
   });
 
-  function mousePosition(event: any, containerRect: DOMRect) {
+  function mousePosition(event: MouseEvent, containerRect: DOMRect) {
     let x = event.pageX - window.scrollX - containerRect.left - zoomRect.width / 2;
     let y = event.pageY - window.scrollY - containerRect.top - zoomRect.height / 2;
     
@@ -180,7 +180,7 @@ export function drawingMode (element: HTMLElement = body, options: context = {li
 
   
   let isDrawing = false;
-  function start (e: any) {
+  function start (e: MouseEvent) {
     isDrawing = true;
     draw(e);
   }
@@ -188,11 +188,11 @@ export function drawingMode (element: HTMLElement = body, options: context = {li
     isDrawing = false;
     ctx.beginPath();
   }
-  function draw (event: any) {
+  function draw (event: MouseEvent) {
     if (!isDrawing) return;
 
-    let x = event.pageX - elementPosition.x;
-    let y = event.pageY - elementPosition.y;
+    const x = event.pageX - elementPosition.x;
+    const y = event.pageY - elementPosition.y;
 
     ctx.lineWidth = options.lineWidth || 5;
     ctx.strokeStyle = options.color || '#000';
