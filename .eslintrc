@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
   "extends": [
@@ -9,12 +9,10 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": [
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "no-console": "warn",
+    "@typescript-eslint/no-var-requires": "off",
     "no-unused-vars": "warn",
     "no-undef": "off"
   }
