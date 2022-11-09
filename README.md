@@ -1,3 +1,3 @@
-# cursor-tools
+# zoom-lens
 
-use a fancy animated cursor on your website
+an image zoom lens for the cursor
