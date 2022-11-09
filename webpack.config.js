@@ -8,18 +8,18 @@ module.exports = {
       {
         test: /\.ts$/,
         include: [path.resolve(__dirname, 'src')],
-        use: 'ts-loader',
+        use: 'ts-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js']
   },
   watch: true,
   devtool: 'eval-source-map',
   output: {
     // publicPath: 'test',
-    filename: 'cursor-tools.js',
-    path: path.resolve(__dirname, 'dist/lib'),
-  },
+    filename: 'zoom-lens.js',
+    path: path.resolve(__dirname, 'dist/lib')
+  }
 };
