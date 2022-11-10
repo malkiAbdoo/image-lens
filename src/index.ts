@@ -1,81 +1,94 @@
+import { Lens } from './types';
+import { Img, Options } from './types';
+
 const body = document.body;
 
-export interface Options {
-  img: HTMLImageElement;
-  zoom?: number;
-}
+export default class zoomLens {
+  private _lens: Partial<Lens> = {};
+  private _image: Img;
+  constructor(image: Img, options: Partial<Options> = {}) {
+    let lens = document.createElement('div');
+    lens.style.position = 'fixed';
+    lens.style.pointerEvents = 'none';
+    lens.style.zIndex = '999';
+    lens.classList.add(options.className || 'zoom-lens');
 
-export function zoomLens(options: Options) {
-  const lens = document.createElement('div');
-  lens.setAttribute(
-    'style',
-    'position: fixed;pointer-events: none !important;z-index: 999;'
-  );
-  lens.classList.add('cursor-lens');
-  body.appendChild(lens);
-  const style = lens.getBoundingClientRect();
-  if (style.width == 0) {
-    lens.style.width = '120px';
-    lens.style.aspectRatio = '1';
-    lens.style.boxShadow = '0 0 30px';
-  }
-  const zoomRatio = options.zoom || 2;
-  const lensRect = lens.getBoundingClientRect();
-  const zoomRect = {
-    width: lensRect.width / zoomRatio,
-    height: lensRect.height / zoomRatio
-  };
-  lens.style.backgroundImage = `url(${options.img.src})`;
-  lens.style.backgroundRepeat = 'no-repeat';
-  // imgElement.style.cursor = 'none';
-  let px: number;
-  let py: number;
-  let sx: number;
-  let sy: number;
+    this._image = image;
+    this._lens.div = lens;
+    body.appendChild(this._lens.div);
 
-  function hide() {
-    lens.style.setProperty('display', 'none', 'important');
+    if (this._lens.div.getBoundingClientRect().width == 0) {
+      this._lens.div.style.width = '120px';
+      this._lens.div.style.aspectRatio = '1';
+      this._lens.div.style.boxShadow = '0 0 30px';
+      lens = this._lens.div;
+    }
+
+    this.zoom(options.zoomRatio || 2);
+    this._lens.div.style.backgroundImage = `url(${image.src})`;
+    this._lens.div.style.backgroundRepeat = 'no-repeat';
+
+    window.addEventListener('scroll', () => this.updateOnScroll());
+    image.addEventListener('mousemove', e => this.updateOnMove(e));
+    image.addEventListener('mouseenter', () => this.show());
+    image.addEventListener('mouseleave', () => this.hide());
   }
 
-  function updateOnScroll() {
-    if (py == null) return;
-    const cx = lensRect.width / zoomRect.width;
-    const cy = lensRect.height / zoomRect.height;
-    const x = px + (window.scrollX - sx);
-    const y = py + (window.scrollY - sy);
-    lens.style.backgroundPosition = '-' + x * cx + 'px -' + y * cy + 'px';
+  setBgSize() {
+    const ratio = this._lens.zoomRatio!;
+    const imageRect = this._image.getBoundingClientRect();
+    const bgw = imageRect.width * ratio;
+    const bgh = imageRect.height * ratio;
+
+    this._lens.div!.style.backgroundSize = bgw + 'px ' + bgh + 'px';
+  }
+  setBgPosition(x: number, y: number) {
+    this._lens.div!.style.backgroundPosition = '-' + x + 'px -' + y + 'px';
   }
 
-  function updateOnMove(event: MouseEvent) {
-    const containerRect = options.img.getBoundingClientRect();
-    const { x, y } = mousePosition(event, containerRect);
-    const cx = lensRect.width / zoomRect.width;
-    const cy = lensRect.height / zoomRect.height;
-    const bgw = containerRect.width * cx;
-    const bgh = containerRect.height * cy;
+  // change the background position on scroll
+  private updateOnScroll() {
+    const prevPos = this._lens.prevPosition;
 
-    [px, py] = [x, y];
-    [sx, sy] = [window.scrollX, window.scrollY];
+    if (prevPos == null) return;
+    const zoomRect = this._lens.zoomRect!;
+    const ratio = this._lens.zoomRatio!;
+    const posX = prevPos.px - zoomRect.width / 2;
+    const posY = prevPos.py - zoomRect.height / 2;
+    const x = (posX + (window.scrollX - prevPos.sx)) * ratio;
+    const y = (posY + (window.scrollY - prevPos.sy)) * ratio;
 
-    lens.style.backgroundSize = bgw + 'px ' + bgh + 'px';
-    lens.style.backgroundPosition = '-' + x * cx + 'px -' + y * cy + 'px';
+    this.setBgSize();
+    this.setBgPosition(x, y);
   }
 
-  function mousePosition(event: MouseEvent, containerRect: DOMRect) {
-    let x =
-      event.pageX - window.scrollX - containerRect.left - zoomRect.width / 2;
-    let y =
-      event.pageY - window.scrollY - containerRect.top - zoomRect.height / 2;
+  // change the background position on mouse mouve
+  private updateOnMove(event: MouseEvent) {
+    const imageRect = this._image.getBoundingClientRect();
+    const [x, y] = this.getMousePosition(event, imageRect);
 
-    let maxX = containerRect.width - zoomRect.width;
-    let maxY = containerRect.height - zoomRect.height;
+    this.setBgSize();
+    this.setBgPosition(x, y);
+  }
+
+  private getMousePosition(event: MouseEvent, imageRect: DOMRect) {
+    const posX = event.pageX - window.scrollX;
+    const posY = event.pageY - window.scrollY;
+    const zoomRect = this._lens.zoomRect!;
+    const lensRect = this._lens.div!.getBoundingClientRect();
+    const ratio = this._lens.zoomRatio!;
+    let x = posX - imageRect.left - zoomRect.width / 2;
+    let y = posY - imageRect.top - zoomRect.height / 2;
+
+    let maxX = imageRect.width - zoomRect.width;
+    let maxY = imageRect.height - zoomRect.height;
     if (x <= 0) x = 0;
     else if (x >= maxX) x = maxX;
     if (y <= 0) y = 0;
     else if (y >= maxY) y = maxY;
 
-    maxX = containerRect.width - lensRect.width;
-    maxY = containerRect.height - lensRect.height;
+    maxX = imageRect.width - lensRect.width;
+    maxY = imageRect.height - lensRect.height;
     let lensX = x + zoomRect.width / 2 - lensRect.width / 2;
     let lensY = y + zoomRect.height / 2 - lensRect.height / 2;
     if (lensX <= 0) lensX = 0;
@@ -83,21 +96,45 @@ export function zoomLens(options: Options) {
     if (lensY <= 0) lensY = 0;
     else if (lensY >= maxY) lensY = maxY;
 
-    lens.style.left = lensX + containerRect.left + 'px';
-    lens.style.top = lensY + containerRect.top + 'px';
-    lens.style.display = 'block';
+    this._lens.prevPosition = {
+      px: x + zoomRect.width / 2,
+      py: y + zoomRect.height / 2,
+      sx: window.scrollX,
+      sy: window.scrollY
+    };
 
-    return { x, y };
+    // set the lens position
+    this._lens.div!.style.left = lensX + imageRect.left + 'px';
+    this._lens.div!.style.top = lensY + imageRect.top + 'px';
+    this.show();
+
+    return [x * ratio, y * ratio];
   }
-  hide();
+  zoom(ratio: number) {
+    const rect = this._lens.div!.getBoundingClientRect();
+    this._lens.zoomRatio = ratio <= 0 ? 0.01 : ratio;
+    this._lens.zoomRect = {
+      width: rect.width / ratio,
+      height: rect.height / ratio
+    };
+    this.updateOnScroll();
+  }
 
-  window.addEventListener('scroll', updateOnScroll);
-  options.img.addEventListener('mouseleave', hide);
-  options.img.addEventListener('mousemove', updateOnMove);
-
-  return lens;
+  show() {
+    this._lens.div!.style.display = 'block';
+  }
+  hide() {
+    this._lens.div!.style.display = 'none';
+  }
+  remove() {
+    this._lens.div!.remove();
+  }
 }
 
 // test
-const i = document.querySelector('img') as HTMLImageElement;
-zoomLens({ img: i });
+const i = document.querySelector('img') as Img;
+// eslint-disable-next-line prefer-const
+let lens = new zoomLens(i, { zoomRatio: 1 });
+setTimeout(() => {
+  lens.zoom(2);
+}, 7000);
