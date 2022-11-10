@@ -12,6 +12,7 @@
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "no-console": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-var-requires": "off",
     "no-unused-vars": "warn",
     "no-undef": "off"
