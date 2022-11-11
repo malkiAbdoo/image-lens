@@ -8,6 +8,7 @@ export interface Options {
 export interface Lens {
   div: HTMLDivElement;
   zoomRatio: number;
+  origin: boolean;
   zoomRect: {
     width: number;
     height: number;
