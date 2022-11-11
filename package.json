@@ -2,7 +2,7 @@
   "name": "zoom-lens",
   "version": "1.0.0",
   "description": "an image zoom lens for the cursor",
-  "types": "dist/lib",
+  "types": "dist/types/index.d.ts",
   "main": "dist/lib/zoom-lens.js",
   "scripts": {
     "build": "webpack",
