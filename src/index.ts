@@ -137,10 +137,10 @@ export default class zoomLens {
   }
 
   show() {
-    this._lens.div!.style.display = 'block';
+    this._lens.div!.style.zIndex = '999';
   }
   hide() {
-    this._lens.div!.style.display = 'none';
+    this._lens.div!.style.zIndex = '-1';
   }
   remove() {
     this._lens.div!.remove();
@@ -149,8 +149,9 @@ export default class zoomLens {
 
 // test
 const i = document.querySelector('img') as Img;
-const lens = new zoomLens(i, { zoomRatio: 2 });
-lens.show();
+const lens = new zoomLens(i, { zoomRatio: 2, originZoom: true });
+lens.hide();
+// lens.show();
 // setTimeout(() => {
 //   lens.zoom(2);
 // }, 7000);
