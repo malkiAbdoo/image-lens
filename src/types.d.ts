@@ -1,10 +1,12 @@
 export type Img = HTMLImageElement;
+
 export interface Options {
   zoomRatio: number;
   className: string;
-  window: HTMLDivElement;
   originZoom: boolean;
+  zoomWindow: boolean;
 }
+
 export interface Lens {
   div: HTMLDivElement;
   zoomRatio: number;
@@ -19,4 +21,5 @@ export interface Lens {
     sx: number;
     sy: number;
   };
+  window: HTMLDivElement;
 }
