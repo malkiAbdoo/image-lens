@@ -15,7 +15,6 @@ export function createZoomWindow(lens: HTMLDivElement, image: Img) {
     zoomWindow.style.left = image.offsetLeft + image.width + 10 + 'px';
     zoomWindow.style.width = image.width / 2 + 'px';
   }
-  //   zoomWindow.style.display = 'none';
 
   return zoomWindow;
 }
