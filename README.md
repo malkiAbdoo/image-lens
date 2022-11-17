@@ -1,3 +1,3 @@
 # zoom-lens
 
-an image zoom lens for the cursor
+an image zoom lens with the cursor
