@@ -4,13 +4,14 @@ import { createZoomWindow } from './zoom-window';
 
 const body = document.body;
 
-export class zoomLens {
+export default class zoomLens {
   private _lens: Partial<Lens> = {};
   private _image: Img;
 
   constructor(image: Img, options: Partial<Options> = {}) {
     const lens = document.createElement('div');
     const originZoom = (options.originZoom || false) && !options.zoomWindow;
+    const background = `url(${image.src}) no-repeat`;
     lens.style.position = originZoom ? 'absolute' : 'fixed';
     lens.style.pointerEvents = 'none';
     lens.style.zIndex = '999';
@@ -21,26 +22,33 @@ export class zoomLens {
     this._lens.origin = originZoom;
     body.appendChild(lens);
 
-    // create the zoom window
     if (originZoom) {
       lens.style.width = image.width + 'px';
       lens.style.height = image.height + 'px';
     } else if (lens.getBoundingClientRect().width == 0) {
       lens.style.width = '120px';
       lens.style.aspectRatio = '1';
-      lens.style.boxShadow = '0 0 30px';
+      if (!options.zoomWindow) lens.style.boxShadow = '0 0 30px';
     }
     if (options.zoomWindow) {
       this._lens.window = createZoomWindow(this._lens.div, this._image);
-      lens.style.background = '#1118';
-      this.zoom(1);
-    } else this.zoom(options.zoomRatio || 2);
+      this._lens.window.style.background = background;
+      lens.style.background = '#FFF6';
+
+      const windowRect = this._lens.window.getBoundingClientRect();
+      const lensRect = this._lens.div.getBoundingClientRect();
+      this.zoom(windowRect.width / lensRect.width);
+      const ratio = this._lens.zoomRatio!;
+      // set the background size
+      this._lens.window.style.backgroundSize =
+        image.width * ratio + 'px ' + image.height * ratio + 'px';
+    } else {
+      this.zoom(options.zoomRatio || 2);
+      lens.style.background = background;
+      this.setBgSize();
+    }
     lens.style.top = image.offsetTop + 'px';
     lens.style.left = image.offsetLeft + 'px';
-
-    lens.style.backgroundImage = `url(${image.src})`;
-    lens.style.backgroundRepeat = 'no-repeat';
-    this.setBgSize();
     this.hide();
 
     image.addEventListener('mousemove', e => this.updateOnMove(e));
@@ -51,12 +59,10 @@ export class zoomLens {
   }
 
   setBgSize() {
-    // image.size * image.size / lens.size
     if (this._lens.window) return;
-    const imageRect = this._image.getBoundingClientRect();
     const ratio = this._lens.zoomRatio!;
-    const bgw = imageRect.width * ratio;
-    const bgh = imageRect.height * ratio;
+    const bgw = this._image.width * ratio;
+    const bgh = this._image.height * ratio;
 
     this._lens.div!.style.backgroundSize = bgw + 'px ' + bgh + 'px';
   }
@@ -67,7 +73,8 @@ export class zoomLens {
       this._lens.div!.style.width = this._image.width + 'px';
       this._lens.div!.style.height = this._image.height + 'px';
     }
-    this._lens.div!.style.backgroundPosition = '-' + x + 'px -' + y + 'px';
+    const lens = this._lens.window ? this._lens.window : this._lens.div!;
+    lens.style.backgroundPosition = '-' + x + 'px -' + y + 'px';
   }
 
   // change the background position on scroll
@@ -138,6 +145,7 @@ export class zoomLens {
   zoom(ratio: number) {
     const rect = this._lens.div!.getBoundingClientRect();
     this._lens.zoomRatio = ratio <= 0 ? 0.01 : ratio;
+    ratio = this._lens.window ? 1 : this._lens.zoomRatio;
     this._lens.zoomRect = {
       width: rect.width / ratio,
       height: rect.height / ratio
