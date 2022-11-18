@@ -5,6 +5,8 @@ export interface Options {
   className: string;
   originZoom: boolean;
   zoomWindow: boolean;
+  lensWidth: number;
+  lensHeight: number;
 }
 
 export interface Lens {
