@@ -19,7 +19,9 @@ module.exports = {
   devtool: 'eval-source-map',
   output: {
     // publicPath: 'test',
+    path: path.resolve(__dirname, 'dist/lib'),
     filename: 'zoom-lens.js',
-    path: path.resolve(__dirname, 'dist/lib')
+    library: 'zoom-lens',
+    libraryTarget: 'umd'
   }
 };
