@@ -1,5 +1,6 @@
 import { Lens } from './types';
 import { Img, Options } from './types';
+import { resize } from './scripts/lens-resize';
 import { createZoomWindow } from './scripts/zoom-window';
 
 export default class zoomLens {
@@ -24,14 +25,16 @@ export default class zoomLens {
     // styling
     const lensStyle = window.getComputedStyle(lens);
     if (originZoom) {
-      lens.style.width = image.width + 'px';
-      lens.style.height = image.height + 'px';
-    } else {
-      const w = options.lensWidth || options.lensHeight || 20;
-      const h = options.lensHeight || w;
-      lens.style.width = (image.width * (w > 100 ? 100 : w)) / 100 + 'px';
-      lens.style.height = (image.height * (h > 100 ? 100 : h)) / 100 + 'px';
+      options.lensWidth = 100;
+      options.lensHeight = 100;
     }
+    resize(
+      this._lens.div,
+      this._image,
+      options.lensWidth || options.lensHeight || null,
+      options.lensHeight || null
+    );
+
     if (options.zoomWindow) {
       this._lens.window = createZoomWindow(this._lens.div, this._image);
       this._lens.window.style.background = background;
@@ -166,10 +169,7 @@ export default class zoomLens {
     const ratio = zoomWindow ? 1 : this._lens.zoomRatio!;
     const lens = this._lens.div!;
     const image = this._image;
-    const w = width;
-    const h = height || width;
-    lens.style.width = (image.width * (w > 100 ? 100 : w)) / 100 + 'px';
-    lens.style.height = (image.height * (h > 100 ? 100 : h)) / 100 + 'px';
+    resize(lens, image, width, height);
 
     const lensRect = lens.getBoundingClientRect();
     if (zoomWindow) {
