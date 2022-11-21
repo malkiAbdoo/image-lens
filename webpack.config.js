@@ -15,10 +15,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js']
   },
-  watch: true,
   devtool: 'eval-source-map',
   output: {
-    // publicPath: 'test',
     path: path.resolve(__dirname, 'dist/lib'),
     filename: 'zoom-lens.js',
     library: 'zoom-lens',
