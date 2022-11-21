@@ -1,4 +1,5 @@
 export type Img = HTMLImageElement;
+export type Div = HTMLDivElement;
 
 export interface Options {
   zoomRatio: number;
