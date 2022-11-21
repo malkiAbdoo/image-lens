@@ -53,10 +53,8 @@ export default class zoomLens {
       this.zoom(options.zoomRatio || 2);
       lens.style.background = background;
     }
-    this.setBgSize();
-    lens.style.top = image.offsetTop + 'px';
-    lens.style.left = image.offsetLeft + 'px';
     this.hide();
+    this.setBgSize();
 
     // Event listeners
     image.addEventListener('mousemove', e => this.updateOnMove(e));
@@ -67,20 +65,21 @@ export default class zoomLens {
   }
 
   private setBgSize() {
+    const lens = this._lens.window ? this._lens.window : this._lens.div!;
     const ratio = this._lens.zoomRatio!;
     const bgw = this._image.width * ratio;
     const bgh = this._image.height * ratio;
+    lens.style.top = this._image.offsetTop + 'px';
+    lens.style.left = this._image.offsetLeft + 'px';
+    if (this._lens.origin) {
+      lens.style.width = this._image.width + 'px';
+      lens.style.height = this._image.height + 'px';
+      this.zoom(ratio);
+    }
 
-    const lens = this._lens.window ? this._lens.window : this._lens.div!;
     lens.style.backgroundSize = bgw + 'px ' + bgh + 'px';
   }
   private setBgPosition(x: number, y: number) {
-    if (this._lens.origin) {
-      this._lens.div!.style.top = this._image.offsetTop + 'px';
-      this._lens.div!.style.left = this._image.offsetLeft + 'px';
-      this._lens.div!.style.width = this._image.width + 'px';
-      this._lens.div!.style.height = this._image.height + 'px';
-    }
     const lens = this._lens.window ? this._lens.window : this._lens.div!;
     lens.style.backgroundPosition = '-' + x + 'px -' + y + 'px';
   }
@@ -194,9 +193,5 @@ export default class zoomLens {
   remove() {
     if (this._lens.window) this._lens.window.remove();
     this._lens.div!.remove();
-  }
-  do() {
-    const c = document.createElement('a');
-    c.href = 'github.com/malkiAbdoo';
   }
 }
