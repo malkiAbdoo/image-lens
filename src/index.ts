@@ -183,15 +183,15 @@ export default class zoomLens {
     this.setBgSize();
   }
   show() {
-    if (this._lens.window) this._lens.window.style.display = 'block';
     this._lens.div!.style.zIndex = '999';
+    if (this._lens.window) this._lens.window.style.display = 'block';
   }
   hide() {
-    if (this._lens.window) this._lens.window.style.display = 'none';
     this._lens.div!.style.zIndex = '-1';
+    if (this._lens.window) this._lens.window.style.display = 'none';
   }
   remove() {
-    if (this._lens.window) this._lens.window.remove();
     this._lens.div!.remove();
+    if (this._lens.window) this._lens.window.remove();
   }
 }
