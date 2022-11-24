@@ -69,8 +69,8 @@ export default class zoomLens {
     const ratio = this._lens.zoomRatio!;
     const bgw = this._image.width * ratio;
     const bgh = this._image.height * ratio;
-    lens.style.top = this._image.offsetTop + 'px';
-    lens.style.left = this._image.offsetLeft + 'px';
+    this._lens.div!.style.top = this._image.offsetTop + 'px';
+    this._lens.div!.style.left = this._image.offsetLeft + 'px';
     if (this._lens.origin) {
       lens.style.width = this._image.width + 'px';
       lens.style.height = this._image.height + 'px';
