@@ -53,8 +53,8 @@ export default class zoomLens {
       this.zoom(options.zoomRatio || 2);
       lens.style.background = background;
     }
-    this.hide();
     this.setBgSize();
+    this.hide();
 
     // Event listeners
     image.addEventListener('mousemove', e => this.updateOnMove(e));
@@ -69,6 +69,7 @@ export default class zoomLens {
     const ratio = this._lens.zoomRatio!;
     const bgw = this._image.width * ratio;
     const bgh = this._image.height * ratio;
+    lens.style.backgroundSize = bgw + 'px ' + bgh + 'px';
     this._lens.div!.style.top = this._image.offsetTop + 'px';
     this._lens.div!.style.left = this._image.offsetLeft + 'px';
     if (this._lens.origin) {
@@ -76,8 +77,6 @@ export default class zoomLens {
       lens.style.height = this._image.height + 'px';
       this.zoom(ratio);
     }
-
-    lens.style.backgroundSize = bgw + 'px ' + bgh + 'px';
   }
   private setBgPosition(x: number, y: number) {
     const lens = this._lens.window ? this._lens.window : this._lens.div!;
@@ -109,11 +108,12 @@ export default class zoomLens {
   // change the background position on mouse move
   private updateOnMove(event: MouseEvent) {
     const origin = this._lens.origin;
+    const lens = this._lens.div!;
     const posX = event.pageX - (origin ? 0 : window.scrollX);
     const posY = event.pageY - (origin ? 0 : window.scrollY);
     const zoomRect = this._lens.zoomRect!;
     const imageRect = this._image.getBoundingClientRect();
-    const lensRect = this._lens.div!.getBoundingClientRect();
+    const lensRect = lens.getBoundingClientRect();
     const ratio = this._lens.zoomRatio!;
     let x = posX - imageRect.left - zoomRect.width / 2;
     let y = posY - imageRect.top - zoomRect.height / 2;
@@ -146,42 +146,22 @@ export default class zoomLens {
     };
 
     if (!this._lens.origin) {
-      this._lens.div!.style.left = lensX + imageRect.left + 'px';
-      this._lens.div!.style.top = lensY + imageRect.top + 'px';
+      lens.style.left = lensX + imageRect.left + 'px';
+      lens.style.top = lensY + imageRect.top + 'px';
     }
+    this.show();
   }
-  zoom(ratio: number) {
+  private zoom(ratio: number) {
     if (this._lens.window) return;
     const rect = this._lens.div!.getBoundingClientRect();
-    this._lens.zoomRatio = ratio <= 0 ? 0.01 : ratio;
+    this._lens.zoomRatio = ratio < 1 ? 1 : ratio;
     ratio = this._lens.zoomRatio;
     this._lens.zoomRect = {
       width: rect.width / ratio,
       height: rect.height / ratio
     };
-    this.updateOnScroll();
   }
 
-  setLensSize(width: number, height = 0) {
-    if (!width || this._lens.origin) return;
-    const zoomWindow = this._lens.window;
-    const ratio = zoomWindow ? 1 : this._lens.zoomRatio!;
-    const lens = this._lens.div!;
-    const image = this._image;
-    resize(lens, image, width, height);
-
-    const lensRect = lens.getBoundingClientRect();
-    if (zoomWindow) {
-      const windowWidth = window.getComputedStyle(zoomWindow).width;
-      zoomWindow.style.aspectRatio = lensRect.width + '/' + lensRect.height;
-      this._lens.zoomRatio = +windowWidth.replace('px', '') / lensRect.width;
-    }
-    this._lens.zoomRect = {
-      width: lensRect.width / ratio,
-      height: lensRect.height / ratio
-    };
-    this.setBgSize();
-  }
   show() {
     this._lens.div!.style.zIndex = '999';
     if (this._lens.window) this._lens.window.style.display = 'block';
