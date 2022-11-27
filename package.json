@@ -7,7 +7,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "test": "cd test/ && webpack"
+    "test": "cd test/ && webpack",
+    "start": "cd example/js/ && webpack -w"
   },
   "repository": {
     "type": "git",
