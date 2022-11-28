@@ -11,6 +11,7 @@
       :root {
         --theme-color: #e22cc5;
         --theme-bg: #140316;
+        --theme-soft: #822572;
       }
       * {
         -webkit-box-sizing: border-box;
@@ -71,15 +72,17 @@
         height: 30px;
         width: 150px;
         border-radius: 7px;
-        border: 2px solid var(--theme-color);
+        border: 2px solid var(--theme-soft);
         background: inherit;
         outline: none;
       }
       .input-container input:hover {
         background: #ffffff1a;
+        border-color: var(--theme-color);
       }
       .input-container input:focus {
         background: inherit;
+        border-color: var(--theme-color);
       }
       .input-container:not(.input-container:nth-child(1))::after {
         content: '%';
