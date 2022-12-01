@@ -63,7 +63,7 @@ add your css to the lens:
 ```
 
 you can also style the zoom window if you are using `zoomWindow` option:
-> Important  
+> **Important**  
 you have to specify (width, top, left)
 ```css
 .zoom-window {
