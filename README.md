@@ -2,7 +2,7 @@
 
 <div align=center>
 
-<img src="./example/assets/zoom-lens-logo-dark.svg" alt="logo" width="59%"><br>
+<img src="./example/assets/zoom-lens-logo-dark.svg" alt="logo" width="50%"><br>
 
 an image zoom lens with the cursor
 
