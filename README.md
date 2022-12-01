@@ -1,10 +1,13 @@
-# zoom-lens
 
 <div align=center>
 
-<img src="./example/assets/zoom-lens-logo-dark.svg" alt="logo" width="50%"><br>
+<img src="./example/assets/zoom-lens-logo.svg" alt="logo" width="10%"><br>
+# zoom-lens
 
 an image zoom lens with the cursor
+
+[![GitHub issues](https://img.shields.io/github/issues/malkiAbdoo/zoom-lens)](https://github.com/malkiAbdoo/zoom-lens/issues)
+
 
 </div>
 
