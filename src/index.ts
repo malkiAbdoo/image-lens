@@ -3,7 +3,7 @@ import { Img, Options } from './types';
 import { resize } from './scripts/lens-resize';
 import { createZoomWindow } from './scripts/zoom-window';
 
-export default class zoomLens {
+export default class imgLens {
   private _lens: Partial<Lens> = {};
   private _image: Img;
 
@@ -15,7 +15,7 @@ export default class zoomLens {
     lens.style.position = originZoom ? 'absolute' : 'fixed';
     lens.style.pointerEvents = 'none';
     lens.style.zIndex = '999';
-    lens.classList.add(options.className || 'zoom-lens');
+    lens.classList.add(options.className || 'image-lens');
 
     this._image = image;
     this._lens.div = lens;
