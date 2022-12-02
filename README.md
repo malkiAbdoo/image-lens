@@ -1,41 +1,49 @@
-
 <div align=center>
 
-<img src="./example/assets/zoom-lens-logo.svg" alt="logo" width="10%"><br>
-# zoom-lens
+<img src="./example/assets/image-lens-logo.svg" alt="logo" width="180px">
+
+# image-lens.js
 
 an image zoom lens with the cursor
 
-[![GitHub issues](https://img.shields.io/github/issues/malkiAbdoo/zoom-lens)](https://github.com/malkiAbdoo/zoom-lens/issues)
-
+[![npm](https://img.shields.io/npm/v/image-lens?logo=npm)](https://www.npmjs.com/package/image-lens)
+[![GitHub Release Date](https://img.shields.io/github/release-date/malkiAbdoo/image-lens?color=ff1cbb&logo=github)](https://github.com/malkiAbdoo/image-lens/releases/tag/v1.0.1)
+[![GitHub issues](https://img.shields.io/github/issues/malkiAbdoo/image-lens)](https://github.com/malkiAbdoo/image-lens/issues)
 
 </div>
 
+## Features
+
+- Add a zoom lens that follows the **cursor** throw the image.
+- Using a **zoom window** that you can change its position and width using CSS.
+- Origin zoom option for the image itself.
+- Set your own **class name**.
+
 ## Demo 🔎
 
-See the [example here](https://malkiabdoo.github.io/zoom-lens/).
+See the [example here](https://malkiabdoo.github.io/image-lens/).
 
 ## Installation
 
 using **npm**:
 ```
-npm i zoom-lens --save
+npm i image-lens --save
 ```
 
 or **yarn**:
 ```
-yarn add zoom-lens
+yarn add image-lens
 ```
 
 ## Getting started
 
-use the `zoomLens` class:
+use the `imgLens` class:
 ```js
-import zoomLens from 'zoom-lens';
+import imgLens from 'image-lens';
 
 const image = document.querySelector('img');
 
-const lens = new zoomLens(image, {
+const lens = new imgLens(image, {
     // the zoom ratio (default = 2)
     zoomRatio: 2,
 
@@ -49,8 +57,8 @@ const lens = new zoomLens(image, {
     // if you set this to TRUE the zoom will be in a side window
     zoomWindow: false,
 
-    // you set the lens class name (default = 'zoom-lens')
-    className: 'zoom-lens'
+    // you set the lens class name (default = 'image-lens')
+    className: 'image-lens'
 });
 ```
 
@@ -58,7 +66,7 @@ const lens = new zoomLens(image, {
 
 add your css to the lens:
 ```css
-.zoom-lens {
+.image-lens {
     box-shadow: 0 0 30px;
 
     ...
@@ -80,4 +88,4 @@ you have to specify (width, top, left)
 
 ## License
 
-Distributed under the [MIT](https://github.com/malkiAbdoo/zoom-lens/blob/master/LICENSE) license.
+Distributed under the [MIT](https://github.com/malkiAbdoo/image-lens/blob/master/LICENSE) license.
