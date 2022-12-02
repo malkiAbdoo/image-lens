@@ -76,6 +76,10 @@
         background: inherit;
         outline: none;
       }
+      .input-container:has(input:disabled) {
+        opacity: 0.3;
+        pointer-events: none;
+      }
       .input-container input:hover {
         background: #ffffff1a;
         border-color: var(--theme-color);

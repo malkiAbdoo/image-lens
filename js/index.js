@@ -12,6 +12,7 @@ let width = 25;
 let height = 25;
 let options = { o: false, w: false };
 let className = 'image-lens';
+
 function newLens() {
   if (lens) lens.remove();
   lens = new imgLens(image, {
@@ -24,6 +25,12 @@ function newLens() {
   });
 }
 
+function disableInputs(r, s) {
+  ratioInput.disabled = r;
+  widthInput.disabled = s;
+  heightInput.disabled = s;
+}
+
 ratioInput.value = ratio;
 widthInput.value = width;
 heightInput.value = height;
@@ -34,8 +41,22 @@ radioButtons.forEach(rb => {
     options = { o: false, w: false };
     let value = document.getElementById(rb.htmlFor).value;
     options[value] = true;
-    if (value === 'w') image.style.margin = '0';
-    else image.style.margin = '0 auto';
+    switch (value) {
+      case 'w':
+        image.style.margin = '0';
+        disableInputs(true, false);
+        break;
+      case 'o':
+        image.style.margin = null;
+        disableInputs(false, true);
+        break;
+      case 'l':
+        image.style.margin = null;
+        disableInputs(false, false);
+        break;
+      default:
+        break;
+    }
     if (value !== 'l') className = 'lens';
     else className = 'image-lens';
     newLens();
@@ -47,7 +68,7 @@ ratioInput.addEventListener('input', () => {
   if (value > 100) ratio = 100;
   else if (!value || value < 1) ratio = 1;
   else ratio = value;
-  if (!options.w) newLens();
+  newLens();
 });
 
 [widthInput, heightInput].forEach(i => {
@@ -57,6 +78,6 @@ ratioInput.addEventListener('input', () => {
     else if (!value || value < 0) value = 0;
     if (i === widthInput) width = value;
     else height = value;
-    if (!options.o) newLens();
+    newLens();
   });
 });
