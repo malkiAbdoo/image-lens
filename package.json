@@ -1,9 +1,9 @@
 {
-  "name": "zoom-lens",
-  "version": "1.0.0",
+  "name": "image-lens",
+  "version": "1.0.1",
   "description": "an image zoom lens for the cursor",
   "types": "dist/types/index.d.ts",
-  "main": "dist/lib/zoom-lens",
+  "main": "dist/lib/image-lens",
   "files": [
     "dist/"
   ],
@@ -11,16 +11,16 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "test": "cd test/ && webpack",
-    "start": "cd example/js/ && webpack -w"
+    "start": "cd example/ && webpack -w"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/malkiAbdoo/zoom-lens"
+    "url": "https://github.com/malkiAbdoo/image-lens"
   },
   "bugs": {
-    "url": "https://github.com/malkiAbdoo/zoom-lens/issues"
+    "url": "https://github.com/malkiAbdoo/image-lens/issues"
   },
-  "homepage": "https://github.com/malkiAbdoo/zoom-lens",
+  "homepage": "https://github.com/malkiAbdoo/image-lens",
   "author": "Malki Abderrahman",
   "license": "MIT",
   "devDependencies": {
@@ -36,9 +36,9 @@
     "webpack-cli": "^4.10.0"
   },
   "keywords": [
+    "image",
     "zoom",
     "lens",
-    "image",
     "window",
     "cursor",
     "zoom-image",
