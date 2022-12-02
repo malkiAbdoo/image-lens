@@ -1,4 +1,4 @@
-import zoomLens from 'zoom-lens';
+import imgLens from 'image-lens';
 
 const image = document.getElementById('example');
 const ratioInput = document.getElementById('ratio');
@@ -11,10 +11,10 @@ let ratio = 2;
 let width = 25;
 let height = 25;
 let options = { o: false, w: false };
-let className = 'zoom-lens';
+let className = 'image-lens';
 function newLens() {
   if (lens) lens.remove();
-  lens = new zoomLens(image, {
+  lens = new imgLens(image, {
     zoomRatio: ratio,
     lensWidth: width,
     lensHeight: height,
@@ -37,7 +37,7 @@ radioButtons.forEach(rb => {
     if (value === 'w') image.style.margin = '0';
     else image.style.margin = '0 auto';
     if (value !== 'l') className = 'lens';
-    else className = 'zoom-lens';
+    else className = 'image-lens';
     newLens();
   });
 });
