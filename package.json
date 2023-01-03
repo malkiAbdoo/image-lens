@@ -10,7 +10,6 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "test": "cd test/ && webpack",
     "start": "cd example/ && webpack -w"
   },
   "repository": {
